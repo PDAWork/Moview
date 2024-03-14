@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 
-base class ApiEntryPoints {
+abstract final class ApiEntryPoints {
   static const String baseUrl = kDebugMode
-      ? "https://api.kinopoisk.dev/ "
+      ? "https://api.kinopoisk.dev/v1.4/"
       : kProfileMode
-          ? "https://api.kinopoisk.dev/ "
-          : "https://api.kinopoisk.dev/ ";
+          ? ""
+          : "";
 
   /// movie/search?page=1&limit=10&query=железный человек
   /// [page] номер страницы

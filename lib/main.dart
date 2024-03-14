@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:movie/feature/app.dart';
+import 'package:movie/app/app_runner.dart';
 
-void main() {
-  runApp(const App());
-}
+void main() => AppRunner().run();
