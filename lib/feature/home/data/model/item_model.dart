@@ -3,7 +3,7 @@ base class ItemModel {
   final String name;
   final String shortDescription;
   final String? urlImage;
-  final dynamic ratingKP;
+  final num ratingKP;
 
   ItemModel({
     required this.id,

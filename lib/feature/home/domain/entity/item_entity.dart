@@ -3,7 +3,7 @@ final class ItemEntity {
   final String name;
   final String shortDescription;
   final String? urlImage;
-  final dynamic ratingKP;
+  final num ratingKP;
 
   ItemEntity({
     required this.id,

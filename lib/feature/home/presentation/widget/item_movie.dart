@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie/feature/home/domain/entity/item_entity.dart';
+import 'package:movie/routes/app_router_utils.dart';
 
 class ItemMovie extends StatelessWidget {
   const ItemMovie({super.key, required ItemEntity item}) : _item = item;
@@ -9,31 +11,23 @@ class ItemMovie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => context.goNamed(Pages.movie.screenName, pathParameters: {
+        "id": _item.id.toString(),
+        "name": _item.name,
+      }),
       leading: _item.urlImage == null
           ? const Icon(Icons.error_outline)
           : Image.network(
               _item.urlImage!,
             ),
       trailing: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const Expanded(
-            child: Icon(
-              Icons.favorite_border,
-            ),
+          Icon(Icons.star, color: Colors.yellow.shade700),
+          const SizedBox(
+            width: 5,
           ),
-          Expanded(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.star, color: Colors.yellow.shade700),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text("${_item.ratingKP}"),
-              ],
-            ),
-          ),
+          Text(_item.ratingKP.toStringAsFixed(1)),
         ],
       ),
       title: Text(

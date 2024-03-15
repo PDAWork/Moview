@@ -12,4 +12,8 @@ abstract final class ApiEntryPoints {
   /// [limit] количество элементов на странице
   /// [query] название фильма
   static const String movieSearch = "/movie/search";
+
+  /// movie/{id}
+  /// [id] id фильма
+  static const String movieInformation = "/movie";
 }

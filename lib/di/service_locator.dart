@@ -9,6 +9,11 @@ import 'package:movie/feature/home/domain/repository/home_repository.dart';
 import 'package:movie/feature/home/domain/use_case/search_use_case.dart';
 import 'package:movie/feature/home/presentation/state/bottom_navigation_bar/bottom_navigation_bar_cubit.dart';
 import 'package:movie/feature/home/presentation/state/search_movie/search_movie_bloc.dart';
+import 'package:movie/feature/movie/data/data_source/movie_remote_data_source.dart';
+import 'package:movie/feature/movie/data/repository/movie_repository_impl.dart';
+import 'package:movie/feature/movie/domain/repository/movie_repository.dart';
+import 'package:movie/feature/movie/domain/use_case.dart/movie_use_case.dart';
+import 'package:movie/feature/movie/presentation/state/movie_cubit.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 final service = GetIt.instance;
@@ -41,16 +46,24 @@ Future<void> initDI() async {
   service.registerLazySingleton<HomeRemoteDataSource>(
     () => HomeRemoteDataSourceImpl(dio: service()),
   );
+  service.registerLazySingleton<MovieRemoteDataSource>(
+    () => MovieRemoteDataSourceImpl(dio: service()),
+  );
 
   // Repository
   service.registerLazySingleton<HomeRepository>(
     () => HomeRepositoryImpl(remoteDataSource: service()),
   );
+  service.registerLazySingleton<MovieRepository>(
+    () => MovieRepositoryImpl(movieRemoteDataSource: service()),
+  );
 
   // Use Case
   service.registerFactory(() => SearchUseCase(repository: service()));
+  service.registerFactory(() => MovieUseCase(repository: service()));
 
   // StateManagment
   service.registerFactory(() => BottomNavigationBarCubit());
   service.registerFactory(() => SearchMovieBloc(service()));
+  service.registerFactory(() => MovieCubit(service()));
 }
