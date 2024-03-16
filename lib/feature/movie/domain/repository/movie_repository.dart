@@ -4,4 +4,7 @@ import 'package:movie/feature/movie/domain/entity/movie_information_entity.dart'
 
 abstract interface class MovieRepository {
   Future<Either<Failure, MovieInformationEntity>> movie(int id);
+  Future<Either<Failure, bool>> favorite(
+    MovieInformationEntity movie, bool status,
+  );
 }

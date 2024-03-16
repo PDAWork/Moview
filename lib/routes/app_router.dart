@@ -5,6 +5,7 @@ import 'package:movie/di/service_locator.dart';
 import 'package:movie/feature/home/presentation/state/bottom_navigation_bar/bottom_navigation_bar_cubit.dart';
 import 'package:movie/feature/home/presentation/state/search_movie/search_movie_bloc.dart';
 import 'package:movie/feature/home/presentation/ui/home.dart';
+import 'package:movie/feature/movie/presentation/state/favorite_change_cubit.dart';
 import 'package:movie/feature/movie/presentation/state/movie_cubit.dart';
 import 'package:movie/feature/movie/presentation/ui/movie.dart';
 
@@ -33,11 +34,18 @@ class AppRouter {
               path: Pages.movie.screenPath,
               name: Pages.movie.screenName,
               builder: (context, state) {
-                return BlocProvider(
-                  create: (context) => service<MovieCubit>()
-                    ..init(
-                      int.parse(state.pathParameters['id'] ?? "0"),
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => service<MovieCubit>()
+                        ..init(
+                          int.parse(state.pathParameters['id'] ?? "0"),
+                        ),
                     ),
+                    BlocProvider(
+                      create: (context) => service<FavoriteChangeCubit>(),
+                    ),
+                  ],
                   child: Movie(
                     name: state.pathParameters['name'] ?? "Название фильма",
                   ),

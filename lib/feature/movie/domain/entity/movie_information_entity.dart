@@ -1,6 +1,7 @@
 import 'package:movie/feature/movie/domain/entity/persont_entity.dart';
 
 base class MovieInformationEntity {
+  final int id;
   final String poster;
   final String name;
   final String description;
@@ -14,6 +15,7 @@ base class MovieInformationEntity {
   final List<String> trailers;
 
   MovieInformationEntity({
+    required this.id,
     required this.poster,
     required this.name,
     required this.description,

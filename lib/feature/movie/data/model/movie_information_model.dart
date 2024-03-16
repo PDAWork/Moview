@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:movie/feature/movie/data/model/person_model.dart';
 
 base class MovieInformationModel {
+  final int id;
   final String poster;
   final String name;
   final String description;
@@ -15,6 +16,7 @@ base class MovieInformationModel {
   final List<String> trailers;
 
   MovieInformationModel({
+    required this.id,
     required this.poster,
     required this.name,
     required this.description,
@@ -30,6 +32,7 @@ base class MovieInformationModel {
 
   factory MovieInformationModel.fromJson(Map<String, dynamic> json) {
     return MovieInformationModel(
+      id: json['id'],
       poster: json['poster']['url'],
       name: json['name'],
       description: json['description'],
