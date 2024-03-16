@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie/core/error/failure.dart';
 import 'package:movie/feature/home/domain/entity/movie_entity.dart';
 import 'package:movie/feature/home/domain/use_case/search_use_case.dart';
 
@@ -33,7 +34,9 @@ class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMovieState> {
 
         await Future.delayed(const Duration(milliseconds: 300));
 
-        result.fold((l) => emit(SearchMovieError()), (newList) {
+        result.fold(
+            (error) => emit(SearchMovieError(message: _messageError(error))),
+            (newList) {
           emit(stateSave.copyWith(
             movies: movie..movieList.addAll(newList.movieList),
             isLoading: false,
@@ -52,9 +55,20 @@ class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMovieState> {
       final result = await _useCase.call(SearchParam(query: event.query));
 
       result.fold(
-        (error) => emit(SearchMovieError()),
+        (error) => emit(SearchMovieError(message: _messageError(error))),
         (movieList) => emit(SearchMovieSuccess(movies: movieList)),
       );
     });
+  }
+
+  String _messageError(Failure failure) {
+    return switch (failure) {
+      // TODO: Handle this case.
+      ServerFailure() => 'Ошибка сервера',
+      // TODO: Handle this case.
+      CacheFailure() => 'Ошибка локального хранилища',
+      // TODO: Handle this case.
+      NetworkFailure() => 'Упс, у вас нет интернета',
+    };
   }
 }

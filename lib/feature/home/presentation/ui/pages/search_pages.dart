@@ -58,8 +58,8 @@ class SearchPages extends StatelessWidget {
                           );
                         },
                       ),
-                    SearchMovieError() => const Center(
-                        child: Text('Ошибка'),
+                    SearchMovieError(:final message) => Center(
+                        child: Text(message),
                       ),
                   };
                 },

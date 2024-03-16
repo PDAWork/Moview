@@ -9,7 +9,7 @@ base class ItemModel {
     required this.id,
     required this.name,
     required this.shortDescription,
-    required this.urlImage,
+     this.urlImage,
     required this.ratingKP,
   });
 

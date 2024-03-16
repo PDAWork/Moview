@@ -4,11 +4,14 @@ import 'package:get_it/get_it.dart';
 import 'package:movie/core/database/app_data_base.dart';
 import 'package:movie/core/network/api_entry_points.dart';
 import 'package:movie/core/network/app_interceptor.dart';
-import 'package:movie/feature/home/data/data_source/remote_data_source.dart';
+import 'package:movie/feature/home/data/data_source/home_local_data_source.dart';
+import 'package:movie/feature/home/data/data_source/home_remote_data_source.dart';
 import 'package:movie/feature/home/data/repository/home_pepository_impl.dart';
 import 'package:movie/feature/home/domain/repository/home_repository.dart';
+import 'package:movie/feature/home/domain/use_case/favorite_use_case.dart';
 import 'package:movie/feature/home/domain/use_case/search_use_case.dart';
 import 'package:movie/feature/home/presentation/state/bottom_navigation_bar/bottom_navigation_bar_cubit.dart';
+import 'package:movie/feature/home/presentation/state/favorite/favorite_cubit.dart';
 import 'package:movie/feature/home/presentation/state/search_movie/search_movie_bloc.dart';
 import 'package:movie/feature/movie/data/data_source/movie_local_data_source.dart';
 import 'package:movie/feature/movie/data/data_source/movie_remote_data_source.dart';
@@ -52,6 +55,8 @@ Future<void> initDI() async {
   service.registerLazySingleton<HomeRemoteDataSource>(
     () => HomeRemoteDataSourceImpl(dio: service()),
   );
+  service.registerLazySingleton<HomeLocalDataSource>(
+      () => HomeLocalDataSourceImpl(appDatabase: service()));
   service.registerLazySingleton<MovieRemoteDataSource>(
     () => MovieRemoteDataSourceImpl(dio: service()),
   );
@@ -61,7 +66,10 @@ Future<void> initDI() async {
 
   // Repository
   service.registerLazySingleton<HomeRepository>(
-    () => HomeRepositoryImpl(remoteDataSource: service()),
+    () => HomeRepositoryImpl(
+      remoteDataSource: service(),
+      homeLocalDataSource: service(),
+    ),
   );
   service.registerLazySingleton<MovieRepository>(
     () => MovieRepositoryImpl(
@@ -73,11 +81,13 @@ Future<void> initDI() async {
   // Use Case
   service.registerFactory(() => SearchUseCase(repository: service()));
   service.registerFactory(() => MovieUseCase(repository: service()));
+  service.registerFactory(() => FavoriteUseCase(repository: service()));
   service.registerFactory(() => FavoriteChangeUseCase(repository: service()));
 
   // StateManagment
   service.registerFactory(() => BottomNavigationBarCubit());
   service.registerFactory(() => SearchMovieBloc(service()));
+  service.registerFactory(() => FavoriteCubit(service()));
   service.registerFactory(() => MovieCubit(service()));
   service.registerFactory(() => FavoriteChangeCubit(service()));
 }

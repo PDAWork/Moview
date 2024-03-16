@@ -1,5 +1,6 @@
 import "package:dartz/dartz.dart";
 import "package:movie/core/error/failure.dart";
+import "package:movie/feature/home/domain/entity/item_entity.dart";
 import "package:movie/feature/home/domain/entity/movie_entity.dart";
 
 abstract interface class HomeRepository {
@@ -8,5 +9,5 @@ abstract interface class HomeRepository {
     int currentPage,
   );
 
-  Future<Either<Failure, List<MovieEntity>>> favorite();
+  Either<Failure, Stream<List<ItemEntity>>> favorite();
 }

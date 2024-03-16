@@ -27,4 +27,8 @@ final class SearchMovieSuccess extends SearchMovieState {
   }
 }
 
-final class SearchMovieError extends SearchMovieState {}
+final class SearchMovieError extends SearchMovieState {
+  final String message;
+
+  SearchMovieError({required this.message});
+}

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:movie/core/error/exeption.dart';
 import 'package:movie/core/network/api_entry_points.dart';
 import 'package:movie/feature/home/data/model/movie_model.dart';
@@ -17,11 +18,15 @@ final class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<MovieModel> search(String query, int currentPage) async {
+    bool statusConnection = await InternetConnectionChecker().hasConnection;
+    if (!statusConnection) {
+      throw NetworkException();
+    }
     try {
       final result = await _dio.get(
         ApiEntryPoints.movieSearch,
         queryParameters: {
-          "query":query,
+          "query": query,
           "page": currentPage,
           "limit": 10,
         },
@@ -32,4 +37,3 @@ final class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     }
   }
 }
-

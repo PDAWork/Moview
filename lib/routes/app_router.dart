@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie/di/service_locator.dart';
 import 'package:movie/feature/home/presentation/state/bottom_navigation_bar/bottom_navigation_bar_cubit.dart';
+import 'package:movie/feature/home/presentation/state/favorite/favorite_cubit.dart';
 import 'package:movie/feature/home/presentation/state/search_movie/search_movie_bloc.dart';
 import 'package:movie/feature/home/presentation/ui/home.dart';
 import 'package:movie/feature/movie/presentation/state/favorite_change_cubit.dart';
@@ -26,6 +27,7 @@ class AppRouter {
           providers: [
             BlocProvider(create: (_) => service<BottomNavigationBarCubit>()),
             BlocProvider(create: (_) => service<SearchMovieBloc>()),
+            BlocProvider(create: (_) => service<FavoriteCubit>()..init()),
           ],
           child: const Home(),
         ),
